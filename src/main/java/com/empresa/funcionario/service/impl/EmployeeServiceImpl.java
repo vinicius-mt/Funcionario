@@ -20,6 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void saveEmployee(final Employee employee) {
+        log.info("Saving new Employee");
         validateEmployeeData(employee);
         validateExistEmail(employee.getEmail());
         repository.saveEmployee(employee);
@@ -27,16 +28,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAllEmployees() {
+        log.info("Getting all employee");
         return repository.getAllEmployees();
     }
 
     @Override
     public Employee getEmployeeById(final Long id) {
+        log.info("Getting employee by id {}", id);
         return repository.getEmployeeById(id);
     }
 
     @Override
     public Employee updateEmployee(final Long id, final Employee employee) {
+        log.info("Updating employee for id {}", id);
         validateEmployeeData(employee);
         validateExistEmail(employee.getEmail());
 
@@ -48,6 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deleteEmployee(final Long id) {
+        log.info("Deleting employee for id {}", id);
         if (!repository.existById(id)) {
             throw new InvalidDataException("There is no employee for this id");
         }
@@ -55,6 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private void validateEmployeeData(final Employee employee) {
+        log.info("Validating employee data");
         if (!StringUtils.hasText(employee.getName()) || employee.getName().length() < 2 || employee.getName().length() > 30) {
             throw new InvalidDataException("The name must be between 2 and 30 characters.");
         }
@@ -73,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private void validateExistEmail(final String email) {
+        log.info("Validating email registered");
         final Employee byEmail = repository.findByEmail(email);
         if(byEmail != null) {
             throw new InvalidDataException("Email already registered");
